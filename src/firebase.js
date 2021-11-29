@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import "firebase/auth"
 
+// setup again
 const firebaseConfig = {
     apiKey: "AIzaSyDj5YSoNxxYlbZhrCp-68CBTJ-mKcLlm0M",
     authDomain: "react-class-online.firebaseapp.com",
