@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 import userReducer from "./reducer";
 
+// management reducer 
 const rootReducer = combineReducers({
-    user: userReducer
+    user: userReducer,
 })
 
 export default rootReducer

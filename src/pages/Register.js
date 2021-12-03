@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // class mapStateToProps
 import { useNavigate, Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { addSomethingNew, registerInitial } from '../redux/actions';
 
 const Register = () => {
 
@@ -26,13 +27,43 @@ const Register = () => {
 
     const { email, password, confirmPassword, userName } = state;
 
+    // get State from store
+    const { currentUser } = useSelector(state => state.user)
+
+    // navigate to home page
+    const navigate = useNavigate();
+
+    // redux <=> mapDispathToProps
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(currentUser){
+            // retrun homepage if had user
+            navigate('/');
+        }
+    }, [currentUser, navigate])
     
-    const handleChange = () => {
-        
+    const handleChange = (e) => {
+        let { name, value } = e.target;
+        setstate({
+            ...state,
+            [name]: value
+        })
     }
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e) => {
+        if(password !== confirmPassword){
+            alert("pls input again!")
+            return;
+        }
+        dispatch(registerInitial(email, password, userName))
+       
+        setstate({
+            userName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        })
     }
     
 
@@ -58,6 +89,7 @@ const Register = () => {
                                 label="Username"
                                 onChange={handleChange}
                                 value={userName}
+                                name="userName"
                             />
                             <TextField
                                 required
@@ -65,6 +97,7 @@ const Register = () => {
                                 label="email"
                                 onChange={handleChange}
                                 value={email}
+                                name="email"
                             />
                             <TextField
                                 required
@@ -74,6 +107,7 @@ const Register = () => {
                                 autoComplete="current-password"
                                 onChange={handleChange}
                                 value={password}
+                                name="password"
                             />
                             <TextField
                                 required
@@ -83,6 +117,7 @@ const Register = () => {
                                 autoComplete="current-password"
                                 onChange={handleChange}
                                 value={confirmPassword}
+                                name="confirmPassword"
                             />
 
                         </CardContent>

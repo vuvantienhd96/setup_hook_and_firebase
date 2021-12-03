@@ -28,3 +28,5 @@ export const registerInitial = (email, password, username) => {
         }).catch(err => dispatch(registerError(err)))
     }
 }
+
+export const addSomethingNew = () => console.log('12334567');

@@ -1,6 +1,10 @@
-import firebase from 'firebase/app'
-import "firebase/auth"
+// connect and setup firebase 
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
+console.log(firebase);
 // setup again
 const firebaseConfig = {
     apiKey: "AIzaSyDj5YSoNxxYlbZhrCp-68CBTJ-mKcLlm0M",
@@ -19,6 +23,7 @@ const googleAuth = new firebase.auth.GoogleAuthProvider ();
 const facebookAuthProvider = new firebase.auth.FacebookAuthProvider ();
 
 export { auth, googleAuth, facebookAuthProvider }
+
 
 
   
