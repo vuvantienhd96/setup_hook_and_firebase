@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -14,8 +14,21 @@ import { useDispatch, useSelector } from 'react-redux';
 // class mapStateToProps
 import { useNavigate, Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { loginUser } from '../redux/actions';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+
 
 const Login = () => {
+
+    // redux <=> mapDispathToProps
+    const dispatch = useDispatch();
+
+    // navigate to home page
+    const navigate = useNavigate();
+
+    // get State from store
+    const { currentUser, err } = useSelector(state => state.user)
 
     const [state, setstate] = useState({
         email: '',
@@ -30,10 +43,28 @@ const Login = () => {
     const handleLoginFacebook = () => {
         // todo
     }
-    const handleChange = () => {
-        
+    const handleChange = (e) => {
+        let { name, value } = e.target;
+        setstate({
+            ...state,
+            [name]: value
+        })
+    }
+    const handleSubmit = (e) => {
+        if(!email || !password ) return
+        dispatch(loginUser(email, password))
+        setstate({
+            email: '',
+            password: '',
+        })
     }
     
+    useEffect(() => {
+        if(currentUser){
+            // retrun homepage if had user
+            navigate('/');
+        }
+    }, [currentUser, navigate])
 
     return (
         <Box
@@ -57,6 +88,7 @@ const Login = () => {
                                 label="Username"
                                 onChange={handleChange}
                                 value={email}
+                                name="email"
                             />
                             <TextField
                                 id="outlined-password-input"
@@ -65,11 +97,14 @@ const Login = () => {
                                 autoComplete="current-password"
                                 onChange={handleChange}
                                 value={password}
+                                name="password"
                             />
-
+                            {err && <Stack sx={{ width: '100%' }} spacing={2}>
+                                <Alert severity="error">please input again !</Alert>
+                            </Stack>}
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => console.log("clicked")} size="small">Login</Button>
+                            <Button onClick={handleSubmit} size="small">Login</Button>
                             <Button color="error" variant="contained" onClick={handleLoginGoogle} size="small">
                                 <GoogleIcon />Login Google
                             </Button>

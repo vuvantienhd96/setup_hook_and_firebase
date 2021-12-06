@@ -85,7 +85,7 @@ const Register = () => {
                             </Typography>
                             <TextField
                                 required
-                                id="outlined-required"
+                                id="outlined-required-name"
                                 label="Username"
                                 onChange={handleChange}
                                 value={userName}
@@ -93,7 +93,7 @@ const Register = () => {
                             />
                             <TextField
                                 required
-                                id="outlined-required"
+                                id="outlined-required-email"
                                 label="email"
                                 onChange={handleChange}
                                 value={email}
@@ -111,7 +111,7 @@ const Register = () => {
                             />
                             <TextField
                                 required
-                                id="outlined-password-input"
+                                id="outlined-confirm-password-input"
                                 label="Confirm Password"
                                 type="password"
                                 autoComplete="current-password"
