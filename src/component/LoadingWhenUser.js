@@ -19,5 +19,6 @@ export default function LoadingWhenUser() {
         <React.Fragment>
             please wait ... {time}
         </React.Fragment>
+        
     )
 }

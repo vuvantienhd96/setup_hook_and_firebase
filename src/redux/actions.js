@@ -1,6 +1,7 @@
-
 import * as types from './actionTypes';
-import { auth } from '../firebase';
+import {
+    auth, facebookAuthProvider, googleAuth
+} from '../firebase';
 
 // rehister
 const registerStart = () => ({
@@ -14,7 +15,7 @@ const registerSuccess = (user) => ({
 
 const registerError = (err) => ({
     type: types.REGISTER_ERROR,
-    payload: err 
+    payload: err
 })
 
 // login
@@ -29,7 +30,7 @@ const loginSuccess = (user) => ({
 
 const loginError = (err) => ({
     type: types.LOGIN_ERROR,
-    payload: err 
+    payload: err
 })
 
 // logout
@@ -44,19 +45,59 @@ const logoutSuccess = (user) => ({
 
 const logoutError = (err) => ({
     type: types.LOGOUT_ERROR,
-    payload: err 
+    payload: err
+})
+
+export const setUser = (user) => ({
+    type: types.SET_USER,
+    payload: user
+})
+
+
+// login google
+const loginGoogleStart = () => ({
+    type: types.LOGIN_GOOGLE_START
+})
+
+const loginGoogleSuccess = (user) => ({
+    type: types.lOGIN_GOOGLE_SUCCESS,
+    payload: user
+})
+
+const loginGoogleError = (err) => ({
+    type: types.LOGIN_GOOGLE_ERROR,
+    payload: err
+})
+
+// login facebook
+const loginFacebookStart = () => ({
+    type: types.LOGIN_FACEBOOK_START
+})
+
+const loginFacebookSuccess = (user) => ({
+    type: types.LOGIN_FACEBOOK_SUCCESS,
+    payload: user
+})
+
+const loginFacebookError = (err) => ({
+    type: types.LOGIN_FACEBOOK_ERROR,
+    payload: err
 })
 
 
 export const registerInitial = (email, password, username) => {
-    return function(dispatch){
+    return function (dispatch) {
 
         dispatch(registerStart());
 
         // firebase 
-        auth.createUserWithEmailAndPassword (email, password).then(({user}) => {
+        auth.createUserWithEmailAndPassword(email, password).then(({
+            user
+        }) => {
             user.updateProfile({
-                username
+                displayName: username,
+                photoURL: "https://picsum.photos/id/237/200/300",
+                phoneNumber: "999-777-555"
             })
             dispatch(registerSuccess(user))
         }).catch(err => dispatch(registerError(err.message)))
@@ -64,19 +105,49 @@ export const registerInitial = (email, password, username) => {
 }
 
 export const loginUser = (email, password) => {
-    return function(dispatch){
+    return function (dispatch) {
 
         dispatch(loginStart());
 
         // firebase 
-        auth.signInWithEmailAndPassword(email, password).then(({user}) => {
+        auth.signInWithEmailAndPassword(email, password).then(({
+            user
+        }) => {
             dispatch(loginSuccess(user))
         }).catch(err => dispatch(loginError(err.message)))
     }
 }
 
+export const loginUserGoogle = () => {
+    return function (dispatch) {
+
+        dispatch(loginGoogleStart());
+
+        // firebase 
+        auth.signInWithPopup(googleAuth).then(({
+            user
+        }) => {
+            dispatch(loginGoogleSuccess(user))
+        }).catch(err => dispatch(loginGoogleError(err.message)))
+    }
+}
+
+export const loginUserFacebook = () => {
+    return function (dispatch) {
+
+        dispatch(loginFacebookStart());
+
+        // firebase 
+        auth.signInWithPopup(facebookAuthProvider.addScope('user_birthday')).then(({
+            user
+        }) => {
+            dispatch(loginFacebookSuccess(user))
+        }).catch(err => dispatch(loginFacebookError(err.message)))
+    }
+}
+
 export const logoutUser = () => {
-    return function(dispatch){
+    return function (dispatch) {
 
         dispatch(logoutStart());
 
@@ -86,5 +157,8 @@ export const logoutUser = () => {
         }).catch(err => dispatch(logoutError(err.message)))
     }
 }
+
+
+
 
 export const addSomethingNew = () => console.log('12334567');

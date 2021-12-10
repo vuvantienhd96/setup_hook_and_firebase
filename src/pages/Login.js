@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // class mapStateToProps
 import { useNavigate, Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { loginUser } from '../redux/actions';
+import { loginUser, loginUserFacebook, loginUserGoogle } from '../redux/actions';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
@@ -39,9 +39,11 @@ const Login = () => {
 
     const handleLoginGoogle = () => {
         // todo
+        dispatch(loginUserGoogle())
     }
     const handleLoginFacebook = () => {
         // todo
+        dispatch(loginUserFacebook())
     }
     const handleChange = (e) => {
         let { name, value } = e.target;
